@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block title %}Tweets{% endblock title %}
+{% block head %}
+<style>
+body {
+  background: linear-gradient(45deg, #007bff, #00ff7f);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #555;
+}
+
+</style>
+{% endblock head %}
+
+{% block body %}
+<div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        Tweet something
+      </div>
+      <div class="card-body">
+        <form method= "POST" action="{% url 'add-tweet' %}">
+        {% csrf_token %}
+          <div class="mb-3">
+            <textarea class="form-control" rows="3" placeholder="What's happening?" required name= 'content'></textarea>
+          </div>          
+          <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">Tweet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    
+    {% for tweet in tweets %}
+    <div class="card mt-4">
+      <div class="card-body">
+        <div class="d-flex">
+          <img src="https://via.placeholder.com/50x50" class="rounded-circle me-3" alt="...">
+          <div>
+            <h5 class="card-title mb-0" name='author'><a href="view/{{tweet.author_id}}">{{tweet.author|title}}</a></h5>
+            <p class="card-text" name='email'><small class="text-muted">{{tweet.email}}</small></p>
+          </div>
+        </div>
+        <p class="card-text mt-3" name='content'>{{tweet.content|title}}</p>
+        
+        {% if tweet.content_image %}
+          <img src="{{ tweet.content_image.url }}" alt="Content Image" style="max-width: 20%; max-height:400px;">
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+{% endblock body %}
