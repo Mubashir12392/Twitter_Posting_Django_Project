@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}Author{% endblock title %}
+{% block head %}
+<style>
+    body {
+        background: linear-gradient(45deg, #007bff, #00ff7f);
+        background-size: 400% 400%;
+        animation: gradient 10s ease infinite;
+      }
+    .tweet-card {
+        background-color: #f8f9fa;
+        border-radius: 20px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        margin: 50px auto;
+        padding: 20px;
+        width: 80%;
+      }
+      
+      .tweet-card:hover {
+        transform: scale(1.02);
+        transition: all 0.2s ease-in-out;
+      }      
+</style>
+
+{% endblock head %}
+{% block body %}
+{% for tweet in tweets %}
+<div class="card mt-4 tweet-card">
+    <div class="card-body">
+      <div class="d-flex">
+        <img src="https://via.placeholder.com/50x50" class="rounded-circle me-3" alt="...">
+        <div>
+          <h5 class="card-title mb-0" name='author'>{{tweet.author|title}}</h5>
+          <p class="card-text" name='email'><small class="text-muted">{{tweet.email}}</small></p>
+        </div>
+      </div>
+      <p class="card-text mt-3" name='content'>{{tweet.content|title}}</p>
+      {% if tweet.content_image %}
+      <img src="{{ tweet.content_image.url }}" alt="Content Image" style="max-width: 20%; max-height:400px;">
+    {% endif %}
+    </div>
+  </div>  
+{% endfor %}
+{% endblock body %}
